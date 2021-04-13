@@ -2,6 +2,7 @@ package com.android.har
 
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             )
             return
         }
-        //TODO: open camera activity
+        startActivity(Intent(this, CameraActivity::class.java))
     }
 
     override fun onRequestPermissionsResult(

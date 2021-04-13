@@ -24,6 +24,9 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Base.MainTheme" />
+        <activity
+            android:name=".CameraActivity"
+            android:theme="@style/Base.Camera" />
     </application>
 
 </manifest>
