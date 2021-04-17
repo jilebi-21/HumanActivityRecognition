@@ -78,14 +78,12 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     override fun updatePoseResult(items: List<PoseOutput>) {
         runOnUiThread {
-            items.sortedByDescending { it.probability }
+            val result = items.sortedByDescending { it.probability }
+                .take(1)
 
             val sb = StringBuilder()
-            for (item in items) {
+            for (item in result) {
                 sb.append(item.label)
-                    .append(" : ")
-                    .append(item.probability)
-                    .append("\n")
             }
             labelView.text = sb.toString()
         }

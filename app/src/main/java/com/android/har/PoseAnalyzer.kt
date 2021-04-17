@@ -8,10 +8,13 @@ import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.android.har.callbacks.PoseOutputListener
+import com.android.har.ml.PoseModel
+import com.android.har.models.PoseOutput
 import com.android.har.utils.YuvToRgbConverter
+import org.tensorflow.lite.support.image.TensorImage
 
 class PoseAnalyzer(
-    activity: Activity,
+    val activity: Activity,
 ) : ImageAnalysis.Analyzer {
     private val TAG = "PoseAnalyzer"
 
@@ -30,7 +33,23 @@ class PoseAnalyzer(
         }
     }
 
-    override fun analyze(imageProxy: ImageProxy) { }
+    override fun analyze(imageProxy: ImageProxy) {
+        val items = mutableListOf<PoseOutput>()
+
+        val model = PoseModel.newInstance(activity)
+        val tfLite = TensorImage.fromBitmap(toBitmap(imageProxy))
+        val outputs = model.process(tfLite)
+            .probabilityAsCategoryList
+
+        for (output in outputs) {
+            items.add(PoseOutput(output.label, output.score))
+        }
+
+        mListener?.updatePoseResult(items)
+
+        model.close()
+        imageProxy.close()
+    }
 
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun toBitmap(imageProxy: ImageProxy): Bitmap? {
