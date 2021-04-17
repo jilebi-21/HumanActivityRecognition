@@ -3,4 +3,5 @@
     <string name="app_name_short">HAR</string>
     <string name="select_video_desc">Click here to select a video from device storage</string>
     <string name="fab_open_camera_text">Open camera</string>
+    <string name="title_settings">Settings</string>
 </resources>

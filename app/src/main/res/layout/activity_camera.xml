@@ -22,9 +22,18 @@
             android:background="@drawable/bg_circle"
             android:onClick="finishCameraActivity"
             android:paddingEnd="2dp"
-            android:paddingBottom="4dp"
             android:src="@drawable/ic_chevron_left"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_circle"
+            android:onClick="openSettings"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

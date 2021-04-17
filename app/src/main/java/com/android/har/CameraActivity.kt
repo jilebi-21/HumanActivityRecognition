@@ -1,5 +1,6 @@
 package com.android.har
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -92,5 +93,9 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     fun finishCameraActivity(view: View) {
         onBackPressed()
+    }
+
+    fun openSettings(view: View) {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 }
