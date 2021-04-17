@@ -3,6 +3,7 @@ package com.android.har
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -87,5 +88,9 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
             }
             labelView.text = sb.toString()
         }
+    }
+
+    fun finishCameraActivity(view: View) {
+        onBackPressed()
     }
 }

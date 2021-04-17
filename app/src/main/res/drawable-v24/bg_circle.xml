@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?colorControlHighlight">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="@color/surface_color_variant" />
+            <corners
+                android:topLeftRadius="33dp"
+                android:topRightRadius="33dp" />
+            <padding android:top="5dp" />
+        </shape>
+    </item>
+    <item android:id="@android:id/background">
+        <shape android:shape="oval">
+            <solid android:color="#40000000" />
+            <corners
+                android:topLeftRadius="33dp"
+                android:topRightRadius="33dp" />
+            <padding android:top="5dp" />
+            <stroke
+                android:width="0.5dp"
+                android:color="#77000000" />
+        </shape>
+    </item>
+</ripple>
