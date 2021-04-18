@@ -13,8 +13,10 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.android.har.callbacks.PoseOutputListener
 import com.android.har.models.PoseOutput
+import com.android.har.utils.Utils
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity(), PoseOutputListener {
@@ -26,6 +28,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     private val labelView by lazy {
         findViewById<TextView>(R.id.action_label)
+    }
+
+    private val sharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,14 +86,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     override fun updatePoseResult(items: List<PoseOutput>) {
         runOnUiThread {
-            val result = items.sortedByDescending { it.probability }
-                .take(1)
-
-            val sb = StringBuilder()
-            for (item in result) {
-                sb.append(item.label)
-            }
-            labelView.text = sb.toString()
+            labelView.text = Utils.processList(
+                items,
+                sharedPreferences
+            )
         }
     }
 
