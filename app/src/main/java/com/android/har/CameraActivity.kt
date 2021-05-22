@@ -18,6 +18,7 @@ import com.android.har.callbacks.PoseOutputListener
 import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.Utils
+import com.android.har.views.ViewRectOverlay
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity(), PoseOutputListener {
@@ -29,6 +30,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     private val labelView by lazy {
         findViewById<TextView>(R.id.action_label)
+    }
+
+    private val viewRect: ViewRectOverlay by lazy {
+        findViewById(R.id.rect_overlay)
     }
 
     private val sharedPreferences by lazy {
@@ -94,6 +99,17 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
                 items,
                 sharedPreferences
             )
+
+            val width = previewView.width
+            val height = previewView.height
+
+            val rect = detectionResults[0].locationAsRectF
+            rect.left = rect.left * width / 224
+            rect.right = rect.right * width / 224
+            rect.top = rect.top * height / 224
+            rect.bottom = rect.bottom * height / 224
+
+            viewRect.setViewRect(detectionResults[0].locationAsRectF)
         }
     }
 
