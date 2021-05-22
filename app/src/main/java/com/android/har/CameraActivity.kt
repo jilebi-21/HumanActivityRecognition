@@ -18,6 +18,7 @@ import com.android.har.callbacks.PoseOutputListener
 import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.Utils
+import com.android.har.utils.Utils.FRAME_SIZE
 import com.android.har.views.ViewRectOverlay
 import java.util.concurrent.Executors
 
@@ -59,7 +60,7 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
                 }
 
             val imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetResolution(Size(224, 224))
+                .setTargetResolution(Size(FRAME_SIZE, FRAME_SIZE))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build().apply {
                     setAnalyzer(cameraExecutor, PoseAnalyzer(this@CameraActivity))
@@ -102,14 +103,15 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
             val width = previewView.width
             val height = previewView.height
+            val offsetTop = previewView.top
 
             val rect = detectionResults[0].locationAsRectF
-            rect.left = rect.left * width / 224
-            rect.right = rect.right * width / 224
-            rect.top = rect.top * height / 224
-            rect.bottom = rect.bottom * height / 224
+            rect.left = rect.left * width / FRAME_SIZE
+            rect.right = rect.right * width / FRAME_SIZE
+            rect.top = offsetTop + rect.top * height / FRAME_SIZE
+            rect.bottom = offsetTop + rect.bottom * height / FRAME_SIZE
 
-            viewRect.setViewRect(detectionResults[0].locationAsRectF)
+            viewRect.setViewRect(rect)
         }
     }
 

@@ -7,6 +7,7 @@ object Utils {
     const val KEY_DISPLAY_MORE_RESULTS = "display_top_results"
     const val KEY_DISPLAY_PROBABILITY = "display_probability"
     const val KEY_DISPLAY_FPS = "display_fps"
+    const val FRAME_SIZE = 224
 
     fun processList(items: List<PoseOutput>, sharedPreferences: SharedPreferences): String {
         val displayMore = sharedPreferences.getBoolean(KEY_DISPLAY_MORE_RESULTS, false)
