@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -16,41 +15,27 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.har.callbacks.PoseOutputListener
+import com.android.har.databinding.ActivityCameraBinding
 import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.PermissionUtils
 import com.android.har.utils.Utils
 import com.android.har.utils.Utils.FRAME_SIZE
-import com.android.har.views.PreviewWrapper
-import com.android.har.views.ViewRectOverlay
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity(), PoseOutputListener {
     private val TAG = "CameraActivity"
 
-    private val previewWrapper by lazy {
-        findViewById<PreviewWrapper>(R.id.wrapper)
-    }
-
-    private val previewView by lazy {
-        previewWrapper.previewView
-    }
-
-    private val labelView by lazy {
-        findViewById<TextView>(R.id.action_label)
-    }
-
-    private val overlayView: ViewRectOverlay by lazy {
-        previewWrapper.overlayView
-    }
-
     private val sharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(this)
     }
 
+    private lateinit var binding: ActivityCameraBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+        binding = ActivityCameraBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Check if the app is opening for first time to request for permissions
         PreferenceManager.getDefaultSharedPreferences(this).apply {
@@ -76,7 +61,7 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
             val preview = Preview.Builder()
                 .build().apply {
-                    setSurfaceProvider(previewView.surfaceProvider)
+                    setSurfaceProvider(binding.wrapper.previewView.surfaceProvider)
                 }
 
             val imageAnalyzer = ImageAnalysis.Builder()
@@ -120,13 +105,13 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
             val category = result.categoryAsString
 
             val rect = if (category.equals("person", true)) {
-                labelView.text = Utils.processList(items, sharedPreferences)
+                binding.actionLabel.text = Utils.processList(items, sharedPreferences)
                 detectionResults[0].locationAsRectF
             } else {
-                labelView.text = ""
+                binding.actionLabel.text = ""
                 RectF()
             }
-            previewWrapper.drawRect(rect)
+            binding.wrapper.drawRect(rect)
         }
     }
 
