@@ -15,16 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Base">
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".LaunchActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Base.MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Base.MainTheme" />
         <activity
             android:name=".CameraActivity"
             android:theme="@style/Base.Camera" />
