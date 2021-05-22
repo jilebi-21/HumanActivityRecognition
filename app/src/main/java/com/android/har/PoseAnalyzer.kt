@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.android.har.callbacks.PoseOutputListener
+import com.android.har.ml.ObjectDetection
 import com.android.har.ml.PoseModel
 import com.android.har.models.PoseOutput
 import com.android.har.utils.YuvToRgbConverter
@@ -37,15 +38,19 @@ class PoseAnalyzer(
         val items = mutableListOf<PoseOutput>()
 
         val model = PoseModel.newInstance(activity)
+        val model1 = ObjectDetection.newInstance(activity)
         val tfLite = TensorImage.fromBitmap(toBitmap(imageProxy))
         val outputs = model.process(tfLite)
             .probabilityAsCategoryList
+
+        val outputs1 = model1.process(tfLite)
+        val detectionResults = outputs1.detectionResultList
 
         for (output in outputs) {
             items.add(PoseOutput(output.label, output.score))
         }
 
-        mListener?.updatePoseResult(items)
+        mListener?.updatePoseResult(items, detectionResults)
 
         model.close()
         imageProxy.close()

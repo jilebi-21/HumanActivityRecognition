@@ -15,6 +15,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.har.callbacks.PoseOutputListener
+import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.Utils
 import java.util.concurrent.Executors
@@ -84,7 +85,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
             CameraSelector.DEFAULT_FRONT_CAMERA
     }
 
-    override fun updatePoseResult(items: List<PoseOutput>) {
+    override fun updatePoseResult(
+        items: List<PoseOutput>,
+        detectionResults: List<ObjectDetection.DetectionResult>
+    ) {
         runOnUiThread {
             labelView.text = Utils.processList(
                 items,
