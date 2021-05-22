@@ -1,6 +1,7 @@
 package com.android.har
 
 import android.content.Intent
+import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -100,12 +101,17 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
         detectionResults: List<ObjectDetection.DetectionResult>
     ) {
         runOnUiThread {
-            labelView.text = Utils.processList(
-                items,
-                sharedPreferences
-            )
+            val result = detectionResults[0]
+            val category = result.categoryAsString
 
-            previewWrapper.drawRect(detectionResults[0].locationAsRectF)
+            val rect = if (category.equals("person", true)) {
+                labelView.text = Utils.processList(items, sharedPreferences)
+                detectionResults[0].locationAsRectF
+            } else {
+                labelView.text = ""
+                RectF()
+            }
+            previewWrapper.drawRect(rect)
         }
     }
 
