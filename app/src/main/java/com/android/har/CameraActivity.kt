@@ -1,5 +1,6 @@
 package com.android.har
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.RectF
@@ -19,6 +20,7 @@ import com.android.har.databinding.ActivityCameraBinding
 import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.PermissionUtils
+import com.android.har.utils.PermissionUtils.CAMERA_PERMISSION_REQUEST_CODE
 import com.android.har.utils.Utils
 import com.android.har.utils.Utils.FRAME_SIZE
 import java.util.concurrent.Executors
@@ -37,17 +39,12 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Check if the app is opening for first time to request for permissions
-        PreferenceManager.getDefaultSharedPreferences(this).apply {
-            getBoolean("is_initial", true).let {
-                if (it) {
-                    requestPermissions(
-                        PermissionUtils.REQUIRED_PERMISSIONS,
-                        PermissionUtils.ALL_PERMISSIONS_REQUEST_CODE
-                    )
-                    edit().putBoolean("is_initial", false).apply()
-                }
-            }
+        val cameraPerm = PermissionUtils.isPermissionGranted(this, Manifest.permission.CAMERA)
+        if (!cameraPerm) {
+            requestPermissions(
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
         }
 
         startCamera()
@@ -121,21 +118,12 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            PermissionUtils.ALL_PERMISSIONS_REQUEST_CODE -> {
-                for (i in permissions.indices) {
-                    if (grantResults[permissions.indexOf(PermissionUtils.REQUIRED_PERMISSIONS[i])] != PackageManager.PERMISSION_GRANTED) {
-                        Log.e(TAG, "${permissions[i]} denied.")
-                    }
-                }
-            }
-            PermissionUtils.CAMERA_PERMISSION_REQUEST_CODE,
-            PermissionUtils.STORAGE_PERMISSION_REQUEST_CODE -> {
+            CAMERA_PERMISSION_REQUEST_CODE -> {
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e(TAG, "${permissions[0]} denied.")
                 }
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         }
     }
 
