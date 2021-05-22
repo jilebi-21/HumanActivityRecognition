@@ -16,17 +16,14 @@
         android:theme="@style/Base">
         <activity android:name=".SettingsActivity" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Base.MainTheme">
+            android:name=".CameraActivity"
+            android:theme="@style/Base.Camera">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CameraActivity"
-            android:theme="@style/Base.Camera" />
     </application>
 
 </manifest>
