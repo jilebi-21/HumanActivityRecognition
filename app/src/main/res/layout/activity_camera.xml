@@ -15,37 +15,46 @@
         app:cardCornerRadius="22dp"
         app:cardElevation="0dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/close_action"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="20dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:padding="13dp"
+            android:src="@drawable/ic_close" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/three_dot_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="20dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_menu" />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageButton
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/bg_circle"
-            android:onClick="finishCameraActivity"
-            android:paddingEnd="2dp"
-            android:src="@drawable/ic_chevron_left"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageButton
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/bg_circle"
-            android:onClick="openSettings"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/action_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
             android:gravity="start"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintEnd_toEndOf="parent"
