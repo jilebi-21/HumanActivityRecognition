@@ -11,7 +11,6 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.har.callbacks.PoseOutputListener
@@ -19,22 +18,27 @@ import com.android.har.ml.ObjectDetection
 import com.android.har.models.PoseOutput
 import com.android.har.utils.Utils
 import com.android.har.utils.Utils.FRAME_SIZE
+import com.android.har.views.PreviewWrapper
 import com.android.har.views.ViewRectOverlay
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity(), PoseOutputListener {
     private val TAG = "CameraActivity"
 
+    private val previewWrapper by lazy {
+        findViewById<PreviewWrapper>(R.id.wrapper)
+    }
+
     private val previewView by lazy {
-        findViewById<PreviewView>(R.id.preview_view)
+        previewWrapper.previewView
     }
 
     private val labelView by lazy {
         findViewById<TextView>(R.id.action_label)
     }
 
-    private val viewRect: ViewRectOverlay by lazy {
-        findViewById(R.id.rect_overlay)
+    private val overlayView: ViewRectOverlay by lazy {
+        previewWrapper.overlayView
     }
 
     private val sharedPreferences by lazy {
@@ -101,17 +105,7 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
                 sharedPreferences
             )
 
-            val width = previewView.width
-            val height = previewView.height
-            val offsetTop = previewView.top
-
-            val rect = detectionResults[0].locationAsRectF
-            rect.left = rect.left * width / FRAME_SIZE
-            rect.right = rect.right * width / FRAME_SIZE
-            rect.top = offsetTop + rect.top * height / FRAME_SIZE
-            rect.bottom = offsetTop + rect.bottom * height / FRAME_SIZE
-
-            viewRect.setViewRect(rect)
+            previewWrapper.drawRect(detectionResults[0].locationAsRectF)
         }
     }
 

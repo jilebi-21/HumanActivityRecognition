@@ -6,22 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.android.har.CameraActivity">
 
-    <FrameLayout
+    <com.android.har.views.PreviewWrapper
+        android:id="@+id/wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-
-        <androidx.camera.view.PreviewView
-            android:id="@+id/preview_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <com.android.har.views.ViewRectOverlay
-            android:id="@+id/rect_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#333"
+        app:cardCornerRadius="22dp"
+        app:cardElevation="0dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
