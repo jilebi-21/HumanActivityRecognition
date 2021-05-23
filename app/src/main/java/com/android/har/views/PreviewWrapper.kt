@@ -4,12 +4,17 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.WindowManager
 import androidx.camera.view.PreviewView
 import androidx.cardview.widget.CardView
+import androidx.preference.PreferenceManager
 import com.android.har.R
 import com.android.har.utils.Utils
+import com.android.har.utils.Utils.ASPECT_16_9
+import com.android.har.utils.Utils.ASPECT_1_1
+import com.android.har.utils.Utils.ASPECT_4_3
+import com.android.har.utils.Utils.ASPECT_FULL
+import com.android.har.utils.Utils.KEY_ASPECT_RATIO
 
 class PreviewWrapper @JvmOverloads constructor(
     context: Context,
@@ -32,12 +37,22 @@ class PreviewWrapper @JvmOverloads constructor(
         }
 
     init {
-        val width = fullScreenSize[0]
+        val screenWidth = fullScreenSize[0]
+        val screenHeight = fullScreenSize[1]
 
-        val reqHeight = width + 200
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val ratio = sharedPrefs.getString(KEY_ASPECT_RATIO, ASPECT_1_1)
 
-        previewView.layoutParams = LayoutParams(width, reqHeight)
-        overlayView.layoutParams = LayoutParams(width, reqHeight)
+        val reqHeight =
+            when (ratio) {
+                ASPECT_4_3 -> screenWidth * 4 / 3
+                ASPECT_16_9 -> screenWidth * 16 / 9
+                ASPECT_FULL -> screenHeight
+                else -> screenWidth
+            }
+
+        previewView.layoutParams = LayoutParams(screenWidth, reqHeight)
+        overlayView.layoutParams = LayoutParams(screenWidth, reqHeight)
 
         addView(previewView)
         addView(overlayView)
@@ -50,8 +65,8 @@ class PreviewWrapper @JvmOverloads constructor(
 
         rect.left = rect.left * width / Utils.FRAME_SIZE
         rect.right = rect.right * width / Utils.FRAME_SIZE
-        rect.top = 50 + rect.top * height / Utils.FRAME_SIZE
-        rect.bottom = rect.bottom * height / Utils.FRAME_SIZE - 50
+        rect.top = rect.top * height / Utils.FRAME_SIZE
+        rect.bottom = rect.bottom * height / Utils.FRAME_SIZE
 
         overlayView.setViewRect(rect)
     }

@@ -21,11 +21,19 @@ import com.android.har.models.PoseOutput
 import com.android.har.utils.PermissionUtils
 import com.android.har.utils.PermissionUtils.CAMERA_PERMISSION_REQUEST_CODE
 import com.android.har.utils.Utils
+import com.android.har.utils.Utils.ASPECT_16_9
+import com.android.har.utils.Utils.ASPECT_1_1
+import com.android.har.utils.Utils.ASPECT_4_3
+import com.android.har.utils.Utils.ASPECT_FULL
 import com.android.har.utils.Utils.FRAME_SIZE
+import com.android.har.utils.Utils.KEY_ASPECT_RATIO
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import java.util.concurrent.Executors
 
-class CameraActivity : AppCompatActivity(), PoseOutputListener {
+class CameraActivity : AppCompatActivity(), PoseOutputListener,
+    ChipGroup.OnCheckedChangeListener {
     private val TAG = "CameraActivity"
 
     private val sharedPreferences by lazy {
@@ -37,6 +45,12 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
     private val bottomSheetBehavior: BottomSheetBehavior<View> by lazy {
         BottomSheetBehavior.from(binding.bottomView)
     }
+
+    private val chipGroup: ChipGroup by lazy { findViewById(R.id.chip_group) }
+    private val aspect_1_1: Chip by lazy { findViewById(R.id.aspect_1_1) }
+    private val aspect_4_3: Chip by lazy { findViewById(R.id.aspect_4_3) }
+    private val aspect_16_9: Chip by lazy { findViewById(R.id.aspect_16_9) }
+    private val aspect_full: Chip by lazy { findViewById(R.id.aspect_full) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +79,27 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
         bottomSheetBehavior.addBottomSheetCallback(callback)
         callback.onSlide(binding.bottomView, 0f)
 
+        when (sharedPreferences.getString(KEY_ASPECT_RATIO, ASPECT_1_1)) {
+            ASPECT_1_1 -> chipGroup.check(aspect_1_1.id)
+            ASPECT_4_3 -> chipGroup.check(aspect_4_3.id)
+            ASPECT_16_9 -> chipGroup.check(aspect_16_9.id)
+            ASPECT_FULL -> chipGroup.check(aspect_full.id)
+        }
+
+        chipGroup.setOnCheckedChangeListener(this)
+
         startCamera()
+    }
+
+    override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
+        val key: String = when (checkedId) {
+            aspect_4_3.id -> ASPECT_4_3
+            aspect_16_9.id -> ASPECT_16_9
+            aspect_full.id -> ASPECT_FULL
+            else -> ASPECT_1_1
+        }
+        sharedPreferences.edit().putString(KEY_ASPECT_RATIO, key).apply()
+        recreate()
     }
 
     private fun startCamera() {

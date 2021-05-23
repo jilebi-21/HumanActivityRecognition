@@ -36,40 +36,46 @@
         android:text="@string/title_settings_aspect_ratio" />
 
     <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:checkedChip="@id/aspect_1_to_1"
+        app:checkedChip="@id/aspect_1_1"
         app:selectionRequired="true"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/aspect_1_to_1"
+            android:id="@+id/aspect_1_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:gravity="center"
-            android:text="@string/aspect_1to1" />
+            android:text="@string/aspect_1_1" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/aspect_4_to_3"
+            android:id="@+id/aspect_4_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:gravity="center"
-            android:text="@string/aspect_4to3" />
+            android:text="@string/aspect_4_3" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/aspect_16_to_9"
+            android:id="@+id/aspect_16_9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:gravity="center"
-            android:text="@string/aspect_16to9" />
+            android:text="@string/aspect_16_9" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/aspect_18_to_9"
+            android:id="@+id/aspect_full"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:gravity="center"
-            android:text="@string/aspect_18to9" />
+            android:padding="5dp"
+            android:text="@string/aspect_full" />
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.appcompat.widget.SwitchCompat
