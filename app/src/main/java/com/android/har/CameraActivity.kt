@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Size
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -27,6 +28,7 @@ import com.android.har.utils.Utils.ASPECT_4_3
 import com.android.har.utils.Utils.ASPECT_FULL
 import com.android.har.utils.Utils.FRAME_SIZE
 import com.android.har.utils.Utils.KEY_ASPECT_RATIO
+import com.android.har.utils.Utils.KEY_DISPLAY_SCORE
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -51,6 +53,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
     private val aspect_4_3: Chip by lazy { findViewById(R.id.aspect_4_3) }
     private val aspect_16_9: Chip by lazy { findViewById(R.id.aspect_16_9) }
     private val aspect_full: Chip by lazy { findViewById(R.id.aspect_full) }
+
+    private val scorePref: SwitchCompat by lazy {
+        findViewById(R.id.score_switch)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +93,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
         }
 
         chipGroup.setOnCheckedChangeListener(this)
+
+        scorePref.setOnCheckedChangeListener { _, checked ->
+            sharedPreferences.edit().putBoolean(KEY_DISPLAY_SCORE, checked).apply()
+        }
 
         startCamera()
     }
