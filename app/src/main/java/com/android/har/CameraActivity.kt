@@ -1,7 +1,6 @@
 package com.android.har
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.RectF
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.android.har.utils.PermissionUtils
 import com.android.har.utils.PermissionUtils.CAMERA_PERMISSION_REQUEST_CODE
 import com.android.har.utils.Utils
 import com.android.har.utils.Utils.FRAME_SIZE
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity(), PoseOutputListener {
@@ -33,6 +33,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
     }
 
     private lateinit var binding: ActivityCameraBinding
+
+    private val bottomSheetBehavior: BottomSheetBehavior<View> by lazy {
+        BottomSheetBehavior.from(binding.bottomView)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,20 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
                 CAMERA_PERMISSION_REQUEST_CODE
             )
         }
+
+        binding.threeDotMenu.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        val callback = object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                bottomSheet.alpha = slideOffset
+            }
+        }
+        bottomSheetBehavior.addBottomSheetCallback(callback)
+        callback.onSlide(binding.bottomView, 0f)
 
         startCamera()
     }
@@ -129,9 +147,5 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener {
 
     fun finishCameraActivity(view: View) {
         onBackPressed()
-    }
-
-    fun openSettings(view: View) {
-        startActivity(Intent(this, SettingsActivity::class.java))
     }
 }
