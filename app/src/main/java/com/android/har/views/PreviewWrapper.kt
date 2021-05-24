@@ -59,7 +59,9 @@ class PreviewWrapper @JvmOverloads constructor(
         radius = 40f
     }
 
-    fun drawRect(rect: RectF) {
+    fun drawRect(rect: RectF?) {
+        if (rect == null) return
+
         val width = previewView.width
         val height = previewView.height
 
