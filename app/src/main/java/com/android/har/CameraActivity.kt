@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Size
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -62,6 +63,8 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         val cameraPerm = PermissionUtils.isPermissionGranted(this, Manifest.permission.CAMERA)
         if (!cameraPerm) {
