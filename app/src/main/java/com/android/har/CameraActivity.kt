@@ -78,6 +78,10 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        binding.closeAction.setOnClickListener {
+            onBackPressed()
+        }
+
         val callback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {}
 
@@ -190,9 +194,5 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
-    }
-
-    fun finishCameraActivity(view: View) {
-        onBackPressed()
     }
 }
