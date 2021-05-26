@@ -16,11 +16,15 @@ object Utils {
     fun processList(items: List<PoseOutput>, sharedPreferences: SharedPreferences): String {
         val displayScore = sharedPreferences.getBoolean(KEY_DISPLAY_SCORE, false)
 
-        val sb = StringBuilder(items[0].label)
+        val topResult = items.maxByOrNull {
+            it.probability
+        } ?: return ""
+
+        val sb = StringBuilder(topResult.label)
 
         if (displayScore) {
             sb.append(" : ")
-                .append(String.format("%.02f", items[0].probability))
+                .append(String.format("%.02f", topResult.probability))
         }
 
         return sb.toString()
