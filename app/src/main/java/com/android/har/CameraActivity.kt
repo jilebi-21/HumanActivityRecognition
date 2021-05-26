@@ -2,6 +2,7 @@ package com.android.har
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -174,7 +175,7 @@ class CameraActivity : AppCompatActivity(), PoseOutputListener,
                 detectionResults[0].locationAsRectF
             } else {
                 binding.actionLabel.text = ""
-                null
+                RectF()
             }
             binding.wrapper.drawRect(rect)
         }
