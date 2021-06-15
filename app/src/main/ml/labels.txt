@@ -1,0 +1,5 @@
+0 feeding a horse
+1 riding a bike
+2 Shooting an arrow
+3 Sitting
+4 Standing
